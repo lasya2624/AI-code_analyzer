@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Code Analyzer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-bottom: 10px;
+      font-family: monospace;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #008CBA;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>AI Code Analyzer</h1>
+  <textarea id="codeInput" placeholder="Paste your Python code here..."></textarea><br>
+  <button onclick="analyzeCode()">Analyze</button>
+
+  <h2>Output</h2>
+  <pre id="output"></pre>
+
+  <script>
+    async function analyzeCode() {
+      const code = document.getElementById('codeInput').value;
+      const output = document.getElementById('output');
+      output.innerText = "⏳ Analyzing...";
+      
+      try {
+        const response = await fetch("https://42cb-34-16-225-132.ngrok-free.app/analyze", {  // 👈 Replace this
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ code })
+        });
+
+        const data = await response.json();
+        output.innerText = data.result || "❌ No result returned.";
+      } catch (error) {
+        output.innerText = "❌ Error: " + error.message;
+      }
+    }
+  </script>
+
+</body>
+</html>
